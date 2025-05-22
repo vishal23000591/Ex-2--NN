@@ -1,8 +1,10 @@
-<H3>Name</H3>
-<H3>Register no.</H3>
-<H3>Date</H3>
+<H3>Name: Vishal S/H3>
+<H3>Register no: 212223110063/H3>
+<H3>Date: </H3>
 <H3>Experiment No. 2 </H3>
-## Implementation of Perceptron for Binary Classification
+
+# Implementation of Perceptron for Binary Classification
+
 # AIM:
 To implement a perceptron for classification using Python<BR>
 
@@ -49,11 +51,85 @@ STEP 9:For ‘N ‘ iterations ,do the following:<BR>
 STEP 10:Plot the error for each iteration <BR>
 STEP 11:Print the accuracy<BR>
 # PROGRAM:
-    ''' Insert your code here '''
+### Importing packages:
+```
+import io
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import numpy as np
+```
+###  Data loading and plotting:
+```
+iris=load_iris()
+X=iris.data
+Y=iris.target
 
+X=X[Y!=2]
+Y=Y[Y!=2]
+
+plt.scatter(X[:,0],X[:,1],c=Y,cmap='bwr',edgecolors='k')
+plt.title("linearly seperable data")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.show()
+```
+### Data scaling and splitting:
+```
+scaler=StandardScaler()
+x_scale=scaler.fit_transform(X)
+xtrain,xtest,ytrain,ytest=train_test_split(x_scale,Y,test_size=0.2)
+
+xtrain=np.c_[np.ones(xtrain.shape[0]),xtrain]
+xtest=np.c_[np.ones(xtest.shape[0]),xtest]
+
+ytrain=np.where(ytrain==0,-1,1)
+ytest=np.where(ytest==0,-1,1)
+```
+### Perceptron training and plotting:
+```
+w=np.zeros(xtrain.shape[1])
+learning_rate=0.01
+errors=[]
+iter=100
+
+for epochs in range(iter):
+  total_error=0
+  for i in range(len(xtrain)):
+    xi=xtrain[i]
+    yi=ytrain[i]
+    prediction=np.sign(np.dot(w,xi))
+    prediction=prediction if prediction !=0 else -1
+    error=yi-prediction
+    w+=learning_rate*error*xi
+    total_error+=int(error!=0)
+  errors.append(total_error)
+
+plt.plot(range(iter), errors, marker='o')
+plt.title("Errors per Epoch")
+plt.xlabel("Epoch")
+plt.ylabel("Number of misclassifications")
+plt.grid(True)
+plt.show()
+```
+### Testing:
+```
+def predict(X, W):
+    predictions = np.sign(np.dot(X, W))
+    predictions[predictions == 0] = -1
+    return predictions
+
+Ypred = predict(xtest, w)
+accuracy = np.mean(Ypred == ytest)
+print("Test Accuracy: {:.2f}%".format(accuracy * 100))
+```
 # OUTPUT:
-
-    ''' Show your result '''
+### linearly seperable data plot:
+![image](https://github.com/user-attachments/assets/62f933b6-de43-4fdd-b615-a5676e97d48d)
+### error plot:
+![image](https://github.com/user-attachments/assets/3b281450-b52f-415a-839e-c1c8ae3be368)
 
 # RESULT:
  Thus, a single layer perceptron model is implemented using python to classify Iris data set.
