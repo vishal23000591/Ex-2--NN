@@ -1,5 +1,5 @@
 <H3>Name: Vishal S</H3>
-<H3>Register no: 212223110063/H3>
+<H3>Register no: 212223110063</H3>
 <H3>Date: </H3>
 <H3>Experiment No. 2 </H3>
 
